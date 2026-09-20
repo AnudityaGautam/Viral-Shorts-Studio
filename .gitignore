@@ -1,0 +1,48 @@
+# Binaries
+ffmpeg.exe
+*.exe
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Output directory and media files
+output/
+*.mp4
+*.ass
+*.mkv
+*.webm
+*.avi
+*.part
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store

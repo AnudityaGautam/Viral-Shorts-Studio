@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Shorts Studio | Long YouTube to 9:16 Shorts Clipper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bangers&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="studio-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="#ff0033" stroke="none"/>
+                        <path d="M19 12L5 3v18l14-9z" stroke="#fff" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="logo-titles">
+                    <h1>Viral Shorts <span>Studio</span></h1>
+                    <p class="subtitle">Turn Long YouTube Formats Into 9:16 Viral Shorts</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-accent">⚡ YouTube Heatmap AI</span>
+                <span class="badge badge-success">🛡️ Copyright Shield</span>
+                <span class="badge badge-purple">100% Free & Local</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="studio-main">
+            <!-- URL Input & Video Loader Card -->
+            <section class="card input-card">
+                <div class="card-header">
+                    <h2><span class="step-num">1</span> Paste Long YouTube Video URL</h2>
+                    <span class="help-text">Works with podcasts, interviews, lectures, and streams (any length)</span>
+                </div>
+                
+                <div class="url-input-group">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... (Paste any long video link)" value="https://www.youtube.com/watch?v=jNQXAC9IVRw">
+                    </div>
+                    <button id="analyzeBtn" class="btn btn-primary">
+                        <span class="btn-text">✨ Find Viral Moments</span>
+                        <div class="spinner hidden" id="analyzeSpinner"></div>
+                    </button>
+                </div>
+
+                <div class="preset-demos">
+                    <span class="preset-label">Quick Samples:</span>
+                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">🦏 Zoo Classic (Test)</button>
+                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=L_LUpnjgPso">🎙️ Podcast Interview</button>
+                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=D-5jZ7a2xL0">🧠 Mindset & Focus</button>
+                </div>
+            </section>
+
+            <!-- Video Info & Viral Moments Grid (Hidden until analyzed) -->
+            <section class="card video-details-card hidden" id="videoDetailsCard">
+                <div class="video-meta-row">
+                    <img id="videoThumb" src="" alt="Thumbnail" class="video-thumb">
+                    <div class="video-meta-info">
+                        <span class="channel-name" id="videoAuthor">Channel Name</span>
+                        <h3 id="videoTitle" class="video-title">Video Title</h3>
+                        <div class="meta-pills">
+                            <span class="meta-pill" id="videoDuration">⏱️ 00:00</span>
+                            <span class="meta-pill" id="subtitleStatus">💬 Auto-Subtitles Ready</span>
+                            <span class="meta-pill highlight-pill">🔥 Replay Heatmap Detected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Viral Moments / Heatmap Peaks -->
+                <div class="viral-moments-section">
+                    <div class="section-title-row">
+                        <h3><span class="step-num">2</span> Top Viral Moments (Heatmap Peaks)</h3>
+                        <span class="section-desc">Identified from viewer replay spikes. Golden length: 30–40 seconds.</span>
+                    </div>
+                    <div class="moments-grid" id="momentsGrid">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Custom Time Adjuster -->
+                <div class="trimmer-row">
+                    <div class="trimmer-inputs">
+                        <div class="time-field">
+                            <label for="startTime">Start Time</label>
+                            <input type="text" id="startTime" value="00:00">
+                        </div>
+                        <div class="trim-arrow">➔</div>
+                        <div class="time-field">
+                            <label for="endTime">End Time</label>
+                            <input type="text" id="endTime" value="00:35">
+                        </div>
+                        <div class="duration-display">
+                            <span class="duration-label">Clip Length:</span>
+                            <span class="duration-val" id="currentDuration">35s</span>
+                        </div>
+                    </div>
+                    <div class="quick-snaps">
+                        <span class="quick-label">Snap Golden Length:</span>
+                        <button class="snap-btn" data-sec="30">30s (Short)</button>
+                        <button class="snap-btn active" data-sec="35">35s (Optimal)</button>
+                        <button class="snap-btn" data-sec="40">40s (Deep Hook)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customizer Section (Hidden until video loaded) -->
+            <section class="customizer-grid hidden" id="customizerSection">
+                <!-- 9:16 Framing Options -->
+                <div class="card customizer-card">
+                    <div class="card-header">
+                        <h3><span class="step-num">3</span> 9:16 Vertical Framing</h3>
+                        <span class="help-text">Optimized for YouTube Shorts & Reels</span>
+                    </div>
+                    <div class="option-cards" id="layoutSelector">
+                        <div class="opt-card active" data-layout="blur">
+                            <div class="opt-icon">📱</div>
+                            <div class="opt-details">
+                                <strong>Blurred Ambient Fill</strong>
+                                <span>Opus Clip style. Keeps full 16:9 frame in focus with dynamic blurred background.</span>
+                            </div>
+                            <div class="opt-badge">Recommended</div>
+                        </div>
+                        <div class="opt-card" data-layout="crop">
+                            <div class="opt-icon">🔍</div>
+                            <div class="opt-details">
+                                <strong>Smart Center Crop</strong>
+                                <span>Crops full 1080x1920 center view, maximizing subject focus.</span>
+                            </div>
+                        </div>
+                        <div class="opt-card" data-layout="split">
+                            <div class="opt-icon">⚡</div>
+                            <div class="opt-details">
+                                <strong>Split Screen</strong>
+                                <span>Dual-stacked frame for interviews, reactions, or podcast setups.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subtitles & Copyright Shield -->
+                <div class="card customizer-card">
+                    <div class="card-header">
+                        <h3><span class="step-num">4</span> Subtitles & Fair Use Shield</h3>
+                        <span class="help-text">Viral animated captions & ContentID protection</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subtitles of Virality Style:</label>
+                        <div class="style-pills" id="styleSelector">
+                            <button class="style-pill active" data-style="hormozi">
+                                <span class="dot dot-yellow"></span> Hormozi Bold (Yellow)
+                            </button>
+                            <button class="style-pill" data-style="mrbeast">
+                                <span class="dot dot-green"></span> MrBeast Pop (Green)
+                            </button>
+                            <button class="style-pill" data-style="cyber">
+                                <span class="dot dot-cyan"></span> Cyber Glow (Cyan)
+                            </button>
+                            <button class="style-pill" data-style="clean">
+                                <span class="dot dot-white"></span> Modern Clean
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="topHookInput">Top Hook Header Banner:</label>
+                        <input type="text" id="topHookInput" value="WAIT TILL THE END 😱" placeholder="e.g. THE HARSH TRUTH 🧠">
+                    </div>
+
+                    <div class="shield-box">
+                        <div class="shield-info">
+                            <div class="shield-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <strong>Copyright Evasion Shield</strong>
+                            </div>
+                            <p>Slightly modulates audio pitch (1.5%) and color grading to alter ContentID acoustic & visual hashes.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="shieldToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button id="generateBtn" class="btn btn-primary btn-large">
+                        <span class="btn-text">🚀 Generate 9:16 Short (MP4)</span>
+                        <div class="spinner hidden" id="genSpinner"></div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Generation Progress Overlay / Card -->
+            <section class="card progress-card hidden" id="progressCard">
+                <div class="progress-header">
+                    <h3 id="progressStatusText">Rendering 9:16 YouTube Short...</h3>
+                    <span id="progressTime">Processing</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <div class="progress-steps">
+                    <div class="step-item active" id="step1">1. Targeted 30-40s Download</div>
+                    <div class="step-item" id="step2">2. Subtitles Generation</div>
+                    <div class="step-item" id="step3">3. FFmpeg 9:16 Rendering</div>
+                    <div class="step-item" id="step4">4. Finalizing MP4</div>
+                </div>
+            </section>
+
+            <!-- Result Card (Hidden until generated) -->
+            <section class="card result-card hidden" id="resultCard">
+                <div class="result-layout">
+                    <div class="video-preview-wrapper">
+                        <video id="resultVideo" controls playsinline></video>
+                        <a id="downloadBtn" href="#" download class="btn btn-success btn-block">
+                            ⬇️ Download 9:16 Short (1080x1920 MP4)
+                        </a>
+                        <button id="openFolderBtn" class="btn btn-secondary btn-block">
+                            📂 Open Output Folder on PC
+                        </button>
+                    </div>
+
+                    <div class="metadata-pack">
+                        <h3>🔥 YouTube Shorts Publishing Pack</h3>
+                        <p class="pack-sub">Optimized for high CTR and algorithm reach:</p>
+                        
+                        <div class="meta-field">
+                            <div class="meta-field-header">
+                                <label>Suggested Title:</label>
+                                <button class="copy-btn" data-target="suggestedTitle">Copy</button>
+                            </div>
+                            <input type="text" id="suggestedTitle" readonly>
+                        </div>
+
+                        <div class="meta-field">
+                            <div class="meta-field-header">
+                                <label>Viral Description:</label>
+                                <button class="copy-btn" data-target="suggestedDesc">Copy</button>
+                            </div>
+                            <textarea id="suggestedDesc" rows="4" readonly></textarea>
+                        </div>
+
+                        <div class="meta-field">
+                            <div class="meta-field-header">
+                                <label>Tags (#Shorts):</label>
+                                <button class="copy-btn" data-target="suggestedTags">Copy</button>
+                            </div>
+                            <input type="text" id="suggestedTags" readonly>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Studio Footer -->
+        <footer class="studio-footer">
+            <p>Viral Shorts Studio • Powered by yt-dlp & FFmpeg Hardware Accelerated Pipeline</p>
+        </footer>
+    </div>
+
+    <script src="client.js"></script>
+</body>
+</html>
