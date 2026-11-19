@@ -4,6 +4,7 @@ import json
 import re
 import math
 import time
+import threading
 import subprocess
 import tempfile
 import urllib.request
@@ -14,8 +15,32 @@ def run_cancellable_subprocess(cmd, cancel_check=None, timeout=None):
     """
     Execute subprocess command while actively checking for cooperative cancellation.
     If cancel_check returns True, immediately terminates and kills the running process.
+    Continuously drains stdout and stderr in background threads to avoid OS pipe buffer deadlocks.
     """
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, errors="replace")
+    stdout_chunks = []
+    stderr_chunks = []
+
+    def read_pipe(pipe, chunks):
+        try:
+            while True:
+                chunk = pipe.read(4096)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+        except Exception:
+            pass
+        finally:
+            try:
+                pipe.close()
+            except Exception:
+                pass
+
+    t_out = threading.Thread(target=read_pipe, args=(proc.stdout, stdout_chunks), daemon=True)
+    t_err = threading.Thread(target=read_pipe, args=(proc.stderr, stderr_chunks), daemon=True)
+    t_out.start()
+    t_err.start()
+
     start_time = time.time()
     while True:
         if cancel_check and cancel_check():
@@ -27,11 +52,16 @@ def run_cancellable_subprocess(cmd, cancel_check=None, timeout=None):
                     proc.kill()
                 except Exception:
                     pass
+            t_out.join(timeout=1.0)
+            t_err.join(timeout=1.0)
             raise RuntimeError("Operation cancelled by user (process terminated)")
             
         ret = proc.poll()
         if ret is not None:
-            stdout, stderr = proc.communicate()
+            t_out.join(timeout=2.0)
+            t_err.join(timeout=2.0)
+            stdout = "".join(stdout_chunks)
+            stderr = "".join(stderr_chunks)
             return subprocess.CompletedProcess(cmd, ret, stdout, stderr)
             
         if timeout and (time.time() - start_time) > timeout:
@@ -39,6 +69,8 @@ def run_cancellable_subprocess(cmd, cancel_check=None, timeout=None):
                 proc.kill()
             except Exception:
                 pass
+            t_out.join(timeout=1.0)
+            t_err.join(timeout=1.0)
             raise subprocess.TimeoutExpired(cmd, timeout)
             
         time.sleep(0.15)
