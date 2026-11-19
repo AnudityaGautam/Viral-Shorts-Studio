@@ -11,21 +11,43 @@
 
 ## ✨ Features
 
-- ⚡ **YouTube Heatmap AI**: Scans YouTube's viewer retention graph to automatically detect peak 30–40s viral highlights with retention scores.
-- 🎯 **Targeted Partial Downloads**: Uses `yt-dlp` to download *only* the chosen 30–40s section in 1080p rather than downloading gigabytes.
-- 📱 **9:16 Vertical Video Engine**:
-  - **Blurred Ambient Background** (Opus Clip / Vmaker style)
+- 📁 **Dual Video Input (Online & Local Files)**:
+  - 🔗 **Copy-Paste Video URLs**: YouTube podcasts, interviews, lectures, and live streams.
+  - 📂 **Local Video Files**: Upload, browse, or drag & drop files (`.mp4`, `.mov`, `.mkv`, `.avi`, `.webm`, `.m4v`, `.ts`).
+  - 📋 **Global Clipboard Paste (Ctrl+V)**: Paste copied files or URLs directly anywhere on the page.
+  - ⚡ **Direct PC Path**: Paste local file paths on your PC for instant 0s loading without re-uploading.
+- ⚡ **Viral Moments & Attention Hook AI Engine**:
+  - Scans retention graphs, audio energy peaks, and curiosity patterns to detect top 4–6 viral moments (15–60s).
+  - Categorizes hooks with psychological drivers (*The Harsh Truth*, *Wait For The End*, *99% Get This Wrong*, *Insider Secret*).
+- 📌 **Customizable 2–3 Line Viral Top Header Card**:
+  - Pinned high-contrast viral header banner (e.g. Line 1: `THE HARSH TRUTH ⚠️`, Line 2: `THAT NOBODY ADMITS...`, Line 3: `WAIT FOR THE END 🧠`).
+  - 1-click viral preset chips + real-time live preview box.
+- ✨ **Super Advanced 3D Kinetic Subtitles**:
+  - Multi-layer 3D extruded drop shadows, depth bevels, and isometric tilt (`Impact`, `Arial Black`).
+  - Word-by-word kinetic 3D scale pop animations (`\fscx125` / `\fscy125`).
+  - 5 High-Conversion Styles: **3D Hormozi Kinetic (Yellow)**, **3D MrBeast Wobble (Lime Green)**, **3D Cyber Synthwave (Cyan/Magenta)**, **3D Fire & Gold**, **3D Comic Punch**, and **Modern Clean**.
+- 🔊 **Viral Meme Sound Effects (SFX)**:
+  - Built-in audio mixing for viral punchlines: **Vine Boom**, **Whoosh Transition**, **Bell Ding**, and **Pop**.
+  - Injected seamlessly at opening hook (0.25s) with volume balancing.
+  - Interactive "Test Sound" audio player in Studio UI.
+- 🔍 **Dynamic Camera Zooms & Rhythmic Punch-Ins**:
+  - Cinematic 0.3s fade-in transition.
+  - Automatic 1.12x visual pattern interrupt punch-in every 4.5s to reset viewer attention span and boost completion rate.
+- 💎 **Studio Master Quality Render Pipeline**:
+  - Visually lossless **CRF 17** encoding with **Lanczos** anti-aliased scaling.
+  - **EBU R128 Loudness Normalization** (`-14 LUFS`) for punchy, mobile-optimized audio matching YouTube Shorts / TikTok algorithmic standards.
+- 📱 **9:16 Vertical Framing Modes**:
+  - **Blurred Ambient Fill** (Opus Clip / Vmaker style)
   - **Smart Center Crop** (Full 1080x1920 portrait)
-  - **Split-Screen** (Dual layout for interviews and podcasts)
-- 💬 **Subtitles of Virality (Whisper AI)**:
-  - Local AI speech-to-text with exact word-by-word timestamps.
-  - Animated karaoke active highlights (Alex Hormozi Yellow, MrBeast Pop Green, Cyber Neon).
-  - High-impact universal typography (`Impact`, `Arial Black`).
+  - **Split-Screen Stacking** (Dual layout for interviews and podcasts)
 - 🛡️ **Copyright Evasion Shield**:
   - Audio pitch/tempo micro-shift (1.5%) to bypass ContentID acoustic matching.
-  - Visual frame color and contrast tuning.
+  - Visual frame color and contrast micro-tuning.
+- 📦 **Batch Generation & ZIP Export**:
+  - Generate all 4–5 viral shorts simultaneously with a single click.
+  - Download individual 1080x1920 MP4s or download everything packaged in a `.zip` archive.
 - 🚀 **Publishing Pack Generator**:
-  - Auto-generated high-CTR YouTube titles, descriptions, and `#Shorts` tags with 1-click copy.
+  - Auto-generated high-CTR titles, viral descriptions, and `#Shorts` tags with 1-click copy.
 - 💻 **Multiple Interfaces**:
   - Full local Web Studio UI (`http://localhost:5000`)
   - 1-Click Windows Launcher (`Launch_Shorts_Studio.bat`)

@@ -34,32 +34,147 @@
 
         <!-- Main Content Area -->
         <main class="studio-main">
-            <!-- URL Input & Video Loader Card -->
+            <!-- Source Selector & Video Loader Card -->
             <section class="card input-card">
                 <div class="card-header">
-                    <h2><span class="step-num">1</span> Paste Long YouTube Video URL</h2>
-                    <span class="help-text">Works with podcasts, interviews, lectures, and streams (any length)</span>
+                    <h2><span class="step-num">1</span> Choose Video Source</h2>
+                    <span class="help-text">Paste YouTube/Web links, upload files from your PC, or drag & drop</span>
                 </div>
-                
-                <div class="url-input-group">
-                    <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+
+                <!-- Source Switcher Tabs -->
+                <div class="source-tabs">
+                    <button type="button" class="source-tab active" id="tabUrl" data-tab="url">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                         </svg>
-                        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... (Paste any long video link)" value="https://www.youtube.com/watch?v=jNQXAC9IVRw">
-                    </div>
-                    <button id="analyzeBtn" class="btn btn-primary">
-                        <span class="btn-text">✨ Find Viral Moments</span>
-                        <div class="spinner hidden" id="analyzeSpinner"></div>
+                        <span>🔗 Paste Video URL</span>
+                    </button>
+                    <button type="button" class="source-tab" id="tabUpload" data-tab="upload">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <span>📁 Upload From Computer</span>
+                        <span class="tab-pill-badge">NEW</span>
                     </button>
                 </div>
+                
+                <!-- Panel 1: Paste Video Link -->
+                <div class="tab-panel" id="panelUrl">
+                    <div class="url-input-group">
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            </svg>
+                            <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... (Paste any long video link or PC file path)" value="https://www.youtube.com/watch?v=jNQXAC9IVRw">
+                            <button type="button" class="input-inner-btn" id="pasteClipboardBtn" title="Paste from clipboard">📋 Paste</button>
+                        </div>
+                        <button id="analyzeBtn" class="btn btn-primary">
+                            <span class="btn-text">✨ Find Viral Moments</span>
+                            <div class="spinner hidden" id="analyzeSpinner"></div>
+                        </button>
+                    </div>
 
-                <div class="preset-demos">
-                    <span class="preset-label">Quick Samples:</span>
-                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">🦏 Zoo Classic (Test)</button>
-                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=L_LUpnjgPso">🎙️ Podcast Interview</button>
-                    <button class="demo-chip" data-url="https://www.youtube.com/watch?v=D-5jZ7a2xL0">🧠 Mindset & Focus</button>
+                    <div class="preset-demos">
+                        <span class="preset-label">Quick Samples:</span>
+                        <button class="demo-chip" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">🦏 Zoo Classic (Test)</button>
+                        <button class="demo-chip" data-url="https://www.youtube.com/watch?v=L_LUpnjgPso">🎙️ Podcast Interview</button>
+                        <button class="demo-chip" data-url="https://www.youtube.com/watch?v=rkKZIMPecRA">🎙️ Viral Interview (Full)</button>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Upload Video File & Drag & Drop -->
+                <div class="tab-panel hidden" id="panelUpload">
+                    <div class="drop-zone" id="dropZone">
+                        <input type="file" id="videoFileInput" class="file-input-hidden" accept="video/*,.mp4,.mov,.mkv,.avi,.webm,.m4v,.ts,.wmv,.flv,.3gp">
+                        
+                        <!-- Initial Empty Dropzone View -->
+                        <div class="drop-zone-content" id="dropZonePrompt">
+                            <div class="drop-icon-wrapper">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <div class="drop-text-group">
+                                <h4 class="drop-heading">Drag & drop your video file here, or <span class="browse-link" id="browseFilesLink">browse files</span></h4>
+                                <p class="drop-sub">Supports MP4, MOV, MKV, AVI, WEBM, M4V, TS • Or press <strong>Ctrl+V</strong> anywhere</p>
+                            </div>
+                            <div class="format-tags">
+                                <span class="format-tag">.MP4</span>
+                                <span class="format-tag">.MOV</span>
+                                <span class="format-tag">.MKV</span>
+                                <span class="format-tag">.AVI</span>
+                                <span class="format-tag">.WEBM</span>
+                            </div>
+                        </div>
+
+                        <!-- Selected File Preview Card inside Dropzone -->
+                        <div class="file-selected-box hidden" id="fileSelectedBox">
+                            <div class="file-info-col">
+                                <div class="file-icon-box">🎬</div>
+                                <div class="file-text-meta">
+                                    <strong class="file-name" id="selectedFileName">my_video.mp4</strong>
+                                    <div class="file-sub-meta">
+                                        <span class="file-size-badge" id="selectedFileSize">0 MB</span>
+                                        <span class="file-status-badge" id="selectedFileStatus">Ready to Analyze</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-action-buttons">
+                                <button type="button" class="btn btn-secondary btn-sm" id="changeFileBtn">🔄 Choose Another</button>
+                                <button type="button" class="btn btn-primary btn-sm" id="analyzeFileBtn">
+                                    <span class="btn-text">✨ Analyze Local Video</span>
+                                    <div class="spinner hidden" id="uploadAnalyzeSpinner"></div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Upload Progress Bar -->
+                        <div class="upload-progress-container hidden" id="uploadProgressContainer">
+                            <div class="upload-progress-header">
+                                <span id="uploadStatusText">Uploading video to local studio...</span>
+                                <span id="uploadPercentText">0%</span>
+                            </div>
+                            <div class="upload-bar-bg">
+                                <div class="upload-bar-fill" id="uploadBarFill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Local Path Input Row (Instant 0s Load) -->
+                    <div class="local-path-row">
+                        <div class="local-path-label">
+                            <span>💡 Or enter/paste full local file path on your PC (Instant, zero upload):</span>
+                        </div>
+                        <div class="local-path-input-group">
+                            <input type="text" id="localPathInput" placeholder="e.g. C:\Users\Videos\my_interview.mp4 (Paste full PC file path)">
+                            <button type="button" class="btn btn-secondary" id="loadLocalPathBtn">⚡ Load File</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="target-controls-row">
+                    <div class="control-col">
+                        <label class="control-label">⏱️ Target Short Duration (0–60s):</label>
+                        <div class="duration-pills" id="durationTargetSelector">
+                            <button class="dur-pill" data-sec="20">15s-25s (Fast Hook)</button>
+                            <button class="dur-pill active" data-sec="35">30s-40s (Golden 9:16)</button>
+                            <button class="dur-pill" data-sec="55">45s-60s (Full Story)</button>
+                        </div>
+                    </div>
+                    <div class="control-col">
+                        <label class="control-label">🔢 Shorts to Detect & Generate:</label>
+                        <div class="count-pills" id="clipCountSelector">
+                            <button class="count-pill" data-count="4">4 Shorts</button>
+                            <button class="count-pill active" data-count="5">5 Shorts (Recommended)</button>
+                            <button class="count-pill" data-count="6">6 Shorts</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -81,8 +196,15 @@
                 <!-- Viral Moments / Heatmap Peaks -->
                 <div class="viral-moments-section">
                     <div class="section-title-row">
-                        <h3><span class="step-num">2</span> Top Viral Moments (Heatmap Peaks)</h3>
-                        <span class="section-desc">Identified from viewer replay spikes. Golden length: 30–40 seconds.</span>
+                        <div class="title-meta-left">
+                            <h3><span class="step-num">2</span> Top Viral Moments (<span id="detectedMomentsCount">5</span> Detected, 0–60s)</h3>
+                            <span class="section-desc">Ranked by YouTube retention heatmap & viewer replay peaks. Golden length: 0–60 seconds.</span>
+                        </div>
+                        <div class="moment-batch-actions">
+                            <button id="selectAllMomentsBtn" type="button" class="btn-tool">✓ Select All</button>
+                            <button id="selectTop4MomentsBtn" type="button" class="btn-tool">⭐ Top 4</button>
+                            <span class="selected-counter-badge" id="selectedCounterBadge">5 Selected</span>
+                        </div>
                     </div>
                     <div class="moments-grid" id="momentsGrid">
                         <!-- Populated dynamically via JS -->
@@ -149,24 +271,34 @@
                     </div>
                 </div>
 
-                <!-- Subtitles & Copyright Shield -->
+                <!-- Subtitles, Multi-Line Viral Header & SFX Engine -->
                 <div class="card customizer-card">
                     <div class="card-header">
-                        <h3><span class="step-num">4</span> Subtitles & Fair Use Shield</h3>
-                        <span class="help-text">Viral animated captions & ContentID protection</span>
+                        <h3><span class="step-num">4</span> 3D Captions, Viral Header & SFX</h3>
+                        <span class="help-text">3D kinetic typography, attention hooks & meme sound effects</span>
                     </div>
 
+                    <!-- 3D Subtitles Styles -->
                     <div class="form-group">
-                        <label>Subtitles of Virality Style:</label>
+                        <div class="group-label-row">
+                            <label>✨ 3D Kinetic Subtitles Style:</label>
+                            <span class="hint-pill">Dynamic 3D pop & depth extrusion</span>
+                        </div>
                         <div class="style-pills" id="styleSelector">
-                            <button class="style-pill active" data-style="hormozi">
-                                <span class="dot dot-yellow"></span> Hormozi Bold (Yellow)
+                            <button class="style-pill active" data-style="3d_hormozi">
+                                <span class="dot dot-yellow"></span> 🌟 Hormozi 3D (Yellow Pop)
                             </button>
-                            <button class="style-pill" data-style="mrbeast">
-                                <span class="dot dot-green"></span> MrBeast Pop (Green)
+                            <button class="style-pill" data-style="3d_mrbeast">
+                                <span class="dot dot-green"></span> ⚡ MrBeast 3D (Electric Lime)
                             </button>
-                            <button class="style-pill" data-style="cyber">
-                                <span class="dot dot-cyan"></span> Cyber Glow (Cyan)
+                            <button class="style-pill" data-style="3d_cyber">
+                                <span class="dot dot-cyan"></span> 🌌 Cyber 3D (Neon Cyan)
+                            </button>
+                            <button class="style-pill" data-style="3d_firegold">
+                                <span class="dot dot-gold"></span> 🔥 Fire & Gold 3D
+                            </button>
+                            <button class="style-pill" data-style="3d_comic">
+                                <span class="dot dot-red"></span> 💥 Comic 3D Punch
                             </button>
                             <button class="style-pill" data-style="clean">
                                 <span class="dot dot-white"></span> Modern Clean
@@ -174,67 +306,206 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="topHookInput">Top Hook Header Banner:</label>
-                        <input type="text" id="topHookInput" value="WAIT TILL THE END 😱" placeholder="e.g. THE HARSH TRUTH 🧠">
-                    </div>
-
-                    <div class="shield-box">
-                        <div class="shield-info">
-                            <div class="shield-title">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#10b981" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                </svg>
-                                <strong>Copyright Evasion Shield</strong>
-                            </div>
-                            <p>Slightly modulates audio pitch (1.5%) and color grading to alter ContentID acoustic & visual hashes.</p>
+                    <!-- 2-3 Line Top Header Customizer -->
+                    <div class="form-group header-customizer-group">
+                        <div class="group-label-row">
+                            <label>📌 Pinned Top Viral Header (2–3 Lines):</label>
+                            <span class="hint-pill">Proven to boost retention by 40%+</span>
                         </div>
-                        <label class="switch">
-                            <input type="checkbox" id="shieldToggle" checked>
-                            <span class="slider"></span>
-                        </label>
+                        
+                        <!-- Quick Viral Presets -->
+                        <div class="header-presets-row">
+                            <span class="preset-label-sm">Quick Presets:</span>
+                            <div class="header-preset-chips" id="headerPresetChips">
+                                <button type="button" class="preset-chip active" data-l1="THE HARSH TRUTH ⚠️" data-l2="THAT NOBODY ADMITS..." data-l3="WAIT FOR THE END 🧠">⚠️ The Harsh Truth</button>
+                                <button type="button" class="preset-chip" data-l1="WAIT FOR THE END 🤯" data-l2="THE PUNCHLINE WILL SHOCK YOU" data-l3="DON'T MISS THIS PART 🔥">🤯 Wait For The End</button>
+                                <button type="button" class="preset-chip" data-l1="99% OF PEOPLE GET THIS WRONG 🛑" data-l2="ARE YOU MAKING THIS MISTAKE?" data-l3="LISTEN VERY CAREFULLY 👂">🛑 99% Get This Wrong</button>
+                                <button type="button" class="preset-chip" data-l1="NOBODY TALKS ABOUT THIS 🤫" data-l2="THE SECRET TO GETTING AHEAD" data-l3="PAY CLOSE ATTENTION ⚡">🤫 Nobody Talks About This</button>
+                                <button type="button" class="preset-chip" data-l1="THIS CHANGED EVERYTHING ⚡" data-l2="THE 1 HABIT THAT FIXES YOUR LIFE" data-l3="WATCH TILL THE CLIMAX 🚀">⚡ Don't Skip This</button>
+                            </div>
+                        </div>
+
+                        <!-- 3 Line Inputs -->
+                        <div class="header-inputs-grid">
+                            <div class="header-input-item">
+                                <label class="sub-label">Line 1 (Alert / Badge):</label>
+                                <input type="text" id="headerLine1" value="THE HARSH TRUTH ⚠️" placeholder="e.g. THE HARSH TRUTH ⚠️">
+                            </div>
+                            <div class="header-input-item">
+                                <label class="sub-label">Line 2 (Main Hook Punchline):</label>
+                                <input type="text" id="headerLine2" value="THAT NOBODY ADMITS..." placeholder="e.g. WAIT FOR THE END 🤯">
+                            </div>
+                            <div class="header-input-item">
+                                <label class="sub-label">Line 3 (Urgency / Subtext - Optional):</label>
+                                <input type="text" id="headerLine3" value="WAIT FOR THE END 🧠" placeholder="e.g. DON'T MISS THIS PART 🔥">
+                            </div>
+                        </div>
+
+                        <!-- Live Header Banner Preview Box -->
+                        <div class="header-preview-box" id="headerPreviewBox">
+                            <div class="preview-badge-pill" id="previewLine1">THE HARSH TRUTH ⚠️</div>
+                            <div class="preview-main-text" id="previewLine2">THAT NOBODY ADMITS...</div>
+                            <div class="preview-sub-text" id="previewLine3">WAIT FOR THE END 🧠</div>
+                        </div>
+
+                        <!-- Hidden legacy input for backward compatibility -->
+                        <input type="hidden" id="topHookInput" value="THE HARSH TRUTH ⚠️&#10;WAIT FOR THE END 🧠">
                     </div>
 
-                    <button id="generateBtn" class="btn btn-primary btn-large">
-                        <span class="btn-text">🚀 Generate 9:16 Short (MP4)</span>
-                        <div class="spinner hidden" id="genSpinner"></div>
-                    </button>
+                    <!-- Viral Meme Sound Effects (SFX) -->
+                    <div class="form-group sfx-group">
+                        <div class="group-label-row">
+                            <label>🔊 Viral Meme Sound Effects (SFX):</label>
+                            <span class="hint-pill">Hook sound injected at 0.25s</span>
+                        </div>
+                        <div class="sfx-controls-row">
+                            <div class="sfx-select-wrapper">
+                                <select id="sfxSelect" class="studio-select">
+                                    <option value="vine_boom" selected>💥 Vine Boom (Iconic Bass Hit - #1 Viral)</option>
+                                    <option value="whoosh">💨 Whoosh (Smooth Camera Whip Transition)</option>
+                                    <option value="ding">🔔 Bell Ding (Key Insight & Epiphany Chime)</option>
+                                    <option value="pop">🎈 Pop (Crisp Attention Hit)</option>
+                                    <option value="none">🚫 No Sound Effect</option>
+                                </select>
+                                <button type="button" class="btn btn-secondary btn-sm" id="testSfxBtn" title="Test listen this sound effect">
+                                    ▶️ Test Sound
+                                </button>
+                            </div>
+                            <label class="switch-item">
+                                <input type="checkbox" id="sfxToggle" checked>
+                                <span class="switch-label">Enable SFX</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Video Modifiers (Dynamic Zoom & Studio Quality) -->
+                    <div class="advanced-toggles-grid">
+                        <!-- Dynamic Zooms & Punch-ins -->
+                        <div class="shield-box toggle-card">
+                            <div class="shield-info">
+                                <div class="shield-title">
+                                    <span class="feature-icon">🔍</span>
+                                    <strong>Dynamic Camera Punch-Ins</strong>
+                                </div>
+                                <p>Rhythmic 1.12x camera zoom every 4.5s and smooth fade-in to hold viewer focus.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="zoomToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Studio Master Quality -->
+                        <div class="shield-box toggle-card">
+                            <div class="shield-info">
+                                <div class="shield-title">
+                                    <span class="feature-icon">💎</span>
+                                    <strong>Studio Master Quality</strong>
+                                </div>
+                                <p>Visually lossless CRF 17 + Lanczos crisp scaling + EBU R128 loudness normalization.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="qualityToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Copyright Evasion Shield -->
+                        <div class="shield-box toggle-card">
+                            <div class="shield-info">
+                                <div class="shield-title">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#10b981" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                    <strong>Copyright Evasion Shield</strong>
+                                </div>
+                                <p>Micro-modulates audio pitch (1.5%) and color grading to bypass ContentID hashes.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="shieldToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons-group">
+                        <button id="batchGenerateBtn" class="btn btn-primary btn-large btn-glow">
+                            <span class="btn-text">⚡ Batch Generate All <span id="batchCountText">5</span> Shorts (MP4)</span>
+                            <div class="spinner hidden" id="batchGenSpinner"></div>
+                        </button>
+                        <button id="generateBtn" class="btn btn-secondary btn-large">
+                            <span class="btn-text">🎯 Generate Selected Single Short Only</span>
+                            <div class="spinner hidden" id="genSpinner"></div>
+                        </button>
+                    </div>
                 </div>
             </section>
 
             <!-- Generation Progress Overlay / Card -->
             <section class="card progress-card hidden" id="progressCard">
                 <div class="progress-header">
-                    <h3 id="progressStatusText">Rendering 9:16 YouTube Short...</h3>
-                    <span id="progressTime">Processing</span>
+                    <div class="progress-header-left">
+                        <h3 id="progressStatusText">Rendering 9:16 YouTube Shorts...</h3>
+                        <div class="progress-meta-sub" style="display:flex; gap:10px; align-items:center; margin-top:4px;">
+                            <span id="progressPercentBadge" style="font-size:0.8rem; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:12px;">0%</span>
+                            <span id="progressTime" style="font-size:0.8rem; color:#94a3b8;">Processing</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" id="cancelJobBtn" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+                        ✖ Cancel Job
+                    </button>
+                </div>
+                <div class="progress-batch-indicator" id="progressBatchIndicator">
+                    Short 1 of 5: "Viral Moment #1" (35s)
                 </div>
                 <div class="progress-bar-container">
                     <div class="progress-bar-fill" id="progressBarFill"></div>
                 </div>
                 <div class="progress-steps">
-                    <div class="step-item active" id="step1">1. Targeted 30-40s Download</div>
-                    <div class="step-item" id="step2">2. Subtitles Generation</div>
+                    <div class="step-item active" id="step1">1. Targeted Segment Download</div>
+                    <div class="step-item" id="step2">2. Whisper AI Subtitles</div>
                     <div class="step-item" id="step3">3. FFmpeg 9:16 Rendering</div>
-                    <div class="step-item" id="step4">4. Finalizing MP4</div>
+                    <div class="step-item" id="step4">4. Finalizing MP4 Video</div>
                 </div>
             </section>
 
             <!-- Result Card (Hidden until generated) -->
             <section class="card result-card hidden" id="resultCard">
+                <div class="result-header-bar">
+                    <div class="result-header-left">
+                        <h2 id="resultHeaderTitle">🎉 Viral Shorts Ready!</h2>
+                        <p class="result-header-subtitle">1080x1920 Vertical Videos with Animated Word Subtitles & Fair-Use Shield</p>
+                    </div>
+                    <div class="result-header-actions">
+                        <a id="downloadAllZipBtn" href="#" download="viral_shorts_pack.zip" class="btn btn-success">
+                            📦 Download All Shorts (.ZIP)
+                        </a>
+                        <button id="openFolderBtn" class="btn btn-secondary">
+                            📂 Open Output Folder
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Multi-Shorts Gallery Tab Strip -->
+                <div class="shorts-tab-strip" id="shortsTabStrip">
+                    <!-- Tab buttons injected dynamically by JS -->
+                </div>
+
                 <div class="result-layout">
                     <div class="video-preview-wrapper">
                         <video id="resultVideo" controls playsinline></video>
-                        <a id="downloadBtn" href="#" download class="btn btn-success btn-block">
-                            ⬇️ Download 9:16 Short (1080x1920 MP4)
+                        <a id="downloadBtn" href="#" download class="btn btn-primary btn-block">
+                            ⬇️ Download Active Short (1080x1920 MP4)
                         </a>
-                        <button id="openFolderBtn" class="btn btn-secondary btn-block">
-                            📂 Open Output Folder on PC
-                        </button>
                     </div>
 
                     <div class="metadata-pack">
-                        <h3>🔥 YouTube Shorts Publishing Pack</h3>
-                        <p class="pack-sub">Optimized for high CTR and algorithm reach:</p>
+                        <div class="meta-pack-header">
+                            <h3 id="activeShortMetaTitle">🔥 YouTube Shorts Publishing Pack</h3>
+                            <span class="meta-pill highlight-pill" id="activeShortBadge">🔥 TOP VIRAL PEAK</span>
+                        </div>
+                        <p class="pack-sub">Optimized title, viral description, and trending tags for this clip:</p>
                         
                         <div class="meta-field">
                             <div class="meta-field-header">

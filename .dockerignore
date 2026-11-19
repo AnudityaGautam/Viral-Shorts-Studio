@@ -1,0 +1,67 @@
+# Git & Repository metadata
+.git/
+.gitignore
+.dockerignore
+
+# Windows binaries and scripts
+ffmpeg.exe
+*.exe
+*.bat
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Local media uploads and output artifacts
+uploads/*
+!uploads/.gitkeep
+output/*
+!output/.gitkeep
+.dist/
+
+# Environment files and credentials
+.env
+.env.*
+*.pem
+*.key
+
+# IDE and OS metadata
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Documentation, tests and scratch files
+*.md
+*.db
+*.sqlite
+*.sqlite3
+test_*.py
+test.html

@@ -1,0 +1,57 @@
+# ==============================================================================
+# Render Infrastructure Blueprint - Viral Shorts Studio
+# Reference: https://render.com/docs/blueprint-spec
+# ==============================================================================
+services:
+  - type: web
+    name: viral-shorts-studio
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter          # Recommend upgrading to 'standard' (2GB RAM) for heavy batch rendering
+    region: oregon         # Alternatives: frankfurt, ohio, singapore
+    healthCheckPath: /api/health
+    numInstances: 1        # Must remain 1 when using SQLite persistent disk
+    
+    # Persistent Disk Storage
+    # Stores SQLite jobs.db database, temporary render buffers, and output clips
+    disk:
+      name: shorts-studio-data
+      mountPath: /app/output
+      sizeGB: 10
+
+    # Production Environment Variables
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 5000
+      - key: OPEN_BROWSER
+        value: "0"
+      - key: ALLOW_LOCAL_PATH_CHECK
+        value: "0"
+      - key: DATA_DIR
+        value: /app/output
+      - key: OUTPUT_DIR
+        value: /app/output
+      - key: UPLOADS_DIR
+        value: /app/output/uploads
+      - key: MAX_CONCURRENT_RENDERS
+        value: "1"
+      - key: JOB_RETENTION_HOURS
+        value: "72"
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "500"
+      - key: WHISPER_MODEL
+        value: tiny
+      - key: WHISPER_DEVICE
+        value: cpu
+      - key: WHISPER_COMPUTE_TYPE
+        value: int8
+      # Optional: Set a custom API key to protect your public endpoints
+      - key: STUDIO_API_KEY
+        sync: false
+      # Optional: Residential/datacenter proxy for YouTube downloads in cloud environments
+      - key: YTDLP_PROXY
+        sync: false

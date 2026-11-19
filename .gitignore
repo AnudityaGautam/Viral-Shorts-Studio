@@ -30,14 +30,23 @@ venv/
 env/
 ENV/
 
-# Output directory and media files
+# Output and upload media directories
 output/
+uploads/
 *.mp4
 *.ass
 *.mkv
 *.webm
 *.avi
 *.part
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
 
 # IDE & OS
 .vscode/
